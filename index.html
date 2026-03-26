@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Repo de Binários</title>
+</head>
+<body>
+<h1>Arquivos Disponíveis</h1>
+<ul id="lista-arquivos">
+<li>Carregando arquivos...</li>
+</ul>
+
+<script>
+const usuario = "AzuraYT1";
+const repo = "BRootfs-repo";
+
+fetch(`https://api.github.com/repos/${usuario}/${repo}/contents/`)
+  .then(response => response.json())
+  .then(data => {
+    const ul = document.getElementById("lista-arquivos");
+    ul.innerHTML = ""; // limpa "Carregando..."
+    data.forEach(item => {
+      if(item.type === "file") {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = item.download_url; // link direto para download
+        a.textContent = item.name;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+    });
+  })
+  .catch(err => {
+    document.getElementById("lista-arquivos").innerHTML = "Erro ao carregar arquivos!";
+    console.error(err);
+  });
+</script>
+</body>
+</html>
